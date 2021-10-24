@@ -1,5 +1,6 @@
 package br.com.fatec.sp.tcc.orquestadrorhistorico.v1.facade;
 
+import br.com.fatec.sp.tcc.orquestadrorhistorico.v1.controller.response.HistoricoResponse;
 import br.com.fatec.sp.tcc.orquestadrorhistorico.v1.controller.response.NotasResponse;
 import br.com.fatec.sp.tcc.orquestadrorhistorico.v1.integracao.orquestradoBd.response.Materia;
 import br.com.fatec.sp.tcc.orquestadrorhistorico.v1.integracao.orquestradoBd.response.NotaUsuario;
@@ -34,6 +35,12 @@ public class NotasFacade {
         return notasUsuarioSemestreatual;
     }
 
+    public List<HistoricoResponse> getHistoricoByUser(final Long numeroMatricula) {
+        final OrquestradorBdNotasByUserResponse notasUser = orquestradorBdService.buscaNotasByUser(numeroMatricula);
+        final List<HistoricoResponse> historicoUsuario = mapToListaHistoricoResponse(notasUser);
+        return historicoUsuario;
+    }
+
     private List<NotaUsuario> filtraNotasAtualByUser(final OrquestradorBdNotasByUserResponse notasUser) {
         try {
             if (Objects.nonNull(notasUser.getResponseBody())) {
@@ -55,6 +62,24 @@ public class NotasFacade {
                     saida.add(notasUserBdMapper.mapNotaMateriaBdToNotasResponse(nota, materia));
                 });
                 return saida;
+            }
+            return new ArrayList<>();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Não foi possível mapear para a saída: Erro - " + e.getMessage());
+        }
+    }
+
+    private List<HistoricoResponse> mapToListaHistoricoResponse(final OrquestradorBdNotasByUserResponse notasUser) {
+        try {
+            if(Objects.nonNull(notasUser)) {
+                if(Objects.nonNull(notasUser.getResponseBody()) && !notasUser.getResponseBody().isEmpty()) {
+                    List<HistoricoResponse> saida = new ArrayList<>();
+                    notasUser.getResponseBody().forEach(nota -> {
+                        Materia materia = orquestradorBdService.buscaMateriaById(nota);
+                        saida.add(notasUserBdMapper.mapNotaMateriaBdToHistoricoResponse(nota, materia));
+                    });
+                    return saida;
+                }
             }
             return new ArrayList<>();
         } catch (Exception e) {
