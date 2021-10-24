@@ -16,7 +16,7 @@ public class OrquestradorBdNotasByUserResponse {
 
     @JsonProperty("data")
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
-    private List<NotasUsuario> responseBody = new ArrayList<>();
+    private List<NotaUsuario> responseBody = new ArrayList<>();
 
     @JsonProperty("message")
     @JsonInclude(value = JsonInclude.Include.NON_NULL)

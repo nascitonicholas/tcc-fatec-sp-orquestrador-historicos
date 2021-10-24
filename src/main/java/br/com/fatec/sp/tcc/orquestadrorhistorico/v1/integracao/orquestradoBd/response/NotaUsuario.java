@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotasUsuario {
+public class NotaUsuario {
 
     @JsonProperty("id_historico_disciplinar")
     private Long id;

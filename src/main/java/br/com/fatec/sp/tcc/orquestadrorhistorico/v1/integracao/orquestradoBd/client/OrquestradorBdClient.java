@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface OrquestradorBdClient {
 
     @GetMapping(value="/historicoDisciplinar/{nrMatricula}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    OrquestradorBdNotasByUserResponse getNotasByUsuario(@PathVariable Long numeroMatricula);
+    OrquestradorBdNotasByUserResponse getNotasByUsuario(@PathVariable(name = "nrMatricula") Long numeroMatricula);
 
-    @GetMapping(value="/materias/{id_materia}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    OrquestradorBdMateriaResponse getMateria(@PathVariable Long idMateria);
+    @GetMapping(value="/materias/{idMateria}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    OrquestradorBdMateriaResponse getMateria(@PathVariable() Long idMateria);
 }
